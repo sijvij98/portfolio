@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- THEME SWITCHER ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        body.classList.add(savedTheme);
+        if (savedTheme === 'dark-mode') {
+            themeToggle.checked = true;
+        }
+    }
+
+    themeToggle.addEventListener('change', () => {
+        if (themeToggle.checked) {
+            body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light-mode');
+        }
+    });
+
     // --- HAMBURGER MENU ---
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
