@@ -3,11 +3,11 @@
 --- */
 :root {
     /* Dark Mode (Default) */
-    --bg-color: #0f172a;
-    --text-color: #f8fafc;
-    --card-bg-color: #1e293b;
-    --border-color: #334155;
-    --accent-gradient: linear-gradient(90deg, #22d3ee, #a78bfa);
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --card-bg-color: #111111;
+    --border-color: #222222;
+    --accent-gradient: linear-gradient(90deg, #ff007a, #ff007a);
 
     /* Light Mode */
     --bg-color-light: #ffffff;
@@ -39,6 +39,12 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes bottom space under images */
 }
 
 body.light-mode {
@@ -115,10 +121,28 @@ body.light-mode .navbar {
     color: var(--text-color);
     font-weight: 500;
     transition: color 0.3s;
+    position: relative; /* For the underline pseudo-element */
+    padding-bottom: 5px; /* Space for the underline */
 }
 
 .nav-links a:hover {
-    color: #a78bfa;
+    color: #ff007a;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #ff4d4d; /* Red color for the underline */
+    bottom: 0;
+    left: 50%; /* Start from the center */
+    transform: translateX(-50%); /* Center the line */
+    transition: width 0.3s ease-out; /* Smooth animation for width */
+}
+
+.nav-links a:hover::after {
+    width: 100%; /* Expand to full width on hover */
 }
 
 .theme-toggle, .hamburger {
@@ -226,119 +250,162 @@ body.light-mode .sub-headline {
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    display: inline-block; /* Ensure padding and width work as expected */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary {
-    background: var(--accent-gradient);
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%); /* Blue to purple gradient */
     color: white;
     border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle initial shadow */
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(106, 17, 203, 0.6); /* Glowing blue/purple shadow */
 }
 
 .btn-secondary {
-    color: var(--text-color);
-    border: 2px solid var(--border-color);
-    margin-left: 1rem;
+    background-color: white; /* White background */
+    color: #333; /* Dark gray text */
+    border: 1px solid #ccc; /* Thin light-gray border */
 }
 
 .btn-secondary:hover {
-    background-color: var(--border-color);
+    background-color: white; /* Keep background white on hover */
+    border-color: #6a11cb; /* Blue/Purple border */
+    color: #6a11cb; /* Blue/Purple text */
+    transform: translateY(-3px); /* Lift up slightly */
+    box-shadow: 0 10px 15px rgba(106, 17, 203, 0.3); /* Soft 3D shadow */
 }
 
 /* ---
---- Experience Timeline ---
+--- New Experience Timeline ---
 --- */
-body.light-mode .experience-timeline {
-    background-color: #f8fafc;
+.experience-section {
+    padding: 6rem 0;
+    /* The section needs a background that works with white cards if the body is dark */
+    background-color: var(--bg-color); 
 }
 
-.timeline {
+body.light-mode .experience-section {
+    background-color: #f8fafc; /* A very light gray for light mode */
+}
+
+.experience-section h2 {
+    color: var(--text-color);
+    margin-bottom: 3rem;
+}
+
+.new-timeline {
     position: relative;
-    max-width: 750px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
-.timeline::after {
+/* The vertical timeline line */
+.new-timeline::before {
     content: '';
     position: absolute;
-    width: 4px;
-    background: var(--accent-gradient);
     top: 0;
     bottom: 0;
-    left: 50%;
-    margin-left: -2px;
+    left: 8px; /* Position to the left */
+    width: 3px;
+    background-color: #3a7bd5;
+    transform: translateX(-50%);
 }
 
 .timeline-item {
-    padding: 10px 40px;
+    display: flex;
+    margin-bottom: 2.5rem;
     position: relative;
-    width: 50%;
 }
 
-.timeline-item:nth-child(odd) {
-    left: 0;
-}
-
-.timeline-item:nth-child(even) {
-    left: 50%;
-}
-
-.timeline-item::after {
-    content: '';
+.timeline-dot {
     position: absolute;
-    width: 24px;
-    height: 24px;
-    right: -12px;
-    background-color: var(--bg-color);
-    border: 4px solid #a78bfa;
-    top: 25px;
+    left: 8px; /* Align with the line */
+    top: 5px; 
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
+    background-color: #3a7bd5;
+    border: 3px solid var(--bg-color);
+    transform: translateX(-50%);
     z-index: 1;
-    transition: transform 0.2s;
 }
 
-.timeline-item:hover::after {
-    transform: scale(1.2);
-}
-
-.timeline-item:nth-child(even)::after {
-    left: -12px;
+body.light-mode .timeline-dot {
+    border-color: #f8fafc;
 }
 
 .timeline-content {
-    padding: 20px 30px;
-    background: var(--bg-color);
+    background-color: var(--card-bg-color);
     border-radius: 8px;
-    position: relative;
+    padding: 1.5rem 2rem;
+    margin-left: 40px; /* Space from the timeline */
+    width: 100%;
     border: 1px solid var(--border-color);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .timeline-content:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.timeline-content h3 {
-    margin-bottom: 0.25rem;
+body.light-mode .timeline-content {
+     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.timeline-title {
+    font-weight: 700; /* Bold title */
     font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
 }
 
-.timeline-content h4 {
+.timeline-company {
+    color: #3a7bd5; /* Blue company name */
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-date {
+    font-style: italic; /* Italic date */
+    color: #888;
     font-size: 0.9rem;
-    font-weight: 400;
-    color: #94a3b8;
+    display: block;
     margin-bottom: 1rem;
 }
 
-body.light-mode .timeline-content h4 {
-    color: #475569;
+.timeline-content p {
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+    .new-timeline::before {
+        left: 8px;
+    }
+    .timeline-dot {
+        left: 8px;
+    }
+    .timeline-content {
+        margin-left: 30px;
+    }
+}
+
+/* ---
+--- Skills Cloud ---
+--- */
 
 /* ---
 --- Skills Cloud ---
@@ -350,102 +417,155 @@ body.light-mode .timeline-content h4 {
     gap: 1rem;
 }
 
-.skill-tag {
-    background-color: var(--card-bg-color);
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 500;
-    border: 1px solid var(--border-color);
-    transition: transform 0.2s;
+.skill-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: white;
+    color: #333;
+    font-weight: 600;
+    font-family: var(--font-family);
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 9999px; /* Fully rounded */
+    padding: 10px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.skill-tag:hover {
+.skill-pill:hover {
+    transform: translateY(-5px); /* Lift on hover */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Increased shadow on hover */
+}
+
+.skill-pill i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #3a7bd5; /* Consistent blue accent color */
+}
+
+/* ---
+--- Certifications ---
+--- */
+
+.certifications {
+    background-color: #f7f9fc; /* Very light off-white background */
+}
+
+.certifications-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+    gap: 1.5rem;
+}
+
+.certification-card {
+    background-color: white;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05); /* Soft drop shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    width: 200px; /* Give cards a consistent width */
+    height: 180px; /* Give cards a consistent height */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.certification-card:hover {
     transform: translateY(-5px);
-    border-color: #a78bfa;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+.certification-card i {
+    font-size: 2.5rem;
+    color: #87CEEB; /* Light blue */
+    margin-bottom: 1rem;
+}
+
+.certification-card span {
+    font-weight: 600; /* Bold text */
+    color: #333; /* Dark text */
+    font-size: 0.9rem;
 }
 
 /* ---
 --- Portfolio (Work) Grid ---
 --- */
 .portfolio-grid {
-    background-color: var(--card-bg-color);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
+    /* No specific background, blends with body */
 }
 
 .projects {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
 .project-card {
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2.5rem;
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* To indicate it's clickable for the modal */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft, subtle drop shadow */
 }
 
 .project-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    border-color: #ff4d4d; /* Theme red accent */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
 .project-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
 }
 
 .project-card p {
-    color: #94a3b8;
-    margin-bottom: 1.5rem;
+    color: #a0aec0; /* Muted gray for subtitle */
+    margin-bottom: 2rem;
 }
 
 body.light-mode .project-card p {
-    color: #475569;
-}
-
-.btn-view {
-    background: none;
-    border: 2px solid #a78bfa;
-    color: #a78bfa;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.btn-view:hover {
-    background-color: #a78bfa;
-    color: white;
+    color: #4a5568;
 }
 
 /* ---
 --- Contact Section ---
 --- */
 .contact-card {
-    background: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(15px);
-    border: 1px solid var(--border-color);
-    border-radius: 15px;
-    padding: 3rem;
-    max-width: 600px;
+    background: rgba(30, 41, 59, 0.6); /* Slightly more opaque glassmorphism */
+    backdrop-filter: blur(20px); /* More blur */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* More prominent border */
+    border-radius: 20px; /* Slightly more rounded */
+    padding: 4rem; /* Increased padding */
+    max-width: 700px; /* Wider card */
     margin: 0 auto;
     text-align: center;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 body.light-mode .contact-card {
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card:hover {
+    transform: translateY(-5px); /* Subtle lift on hover */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover */
 }
 
 .contact-card h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem; /* Larger font size */
+    font-weight: 700; /* Bolder */
+    margin-bottom: 2rem; /* More space */
+    color: var(--text-color);
 }
 
 .email-display {
@@ -457,18 +577,9 @@ body.light-mode .contact-card {
 
 .btn-contact {
     display: inline-block;
-    width: 80%;
-    margin-bottom: 1.5rem;
-}
-
-.linkedin-link i {
-    font-size: 2.5rem;
-    color: var(--text-color);
-    transition: color 0.3s;
-}
-
-.linkedin-link:hover i {
-    color: #a78bfa;
+    width: auto; /* Allow button to size naturally */
+    min-width: 250px; /* Minimum width for prominence */
+    margin-top: 1.5rem; /* Margin from h2 */
 }
 
 
@@ -503,7 +614,7 @@ body.light-mode .contact-card {
 .modal-content h3 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    color: #a78bfa;
+    color: #ff007a;
 }
 
 .modal-content p {
@@ -540,6 +651,18 @@ body.light-mode .contact-card {
 --- Responsive Design ---
 --- */
 @media (max-width: 768px) {
+    h1.headline {
+        font-size: 2.8rem; /* Reduced for mobile */
+    }
+
+    h2 {
+        font-size: 2rem; /* Reduced for mobile */
+    }
+
+    section {
+        padding: 4rem 0; /* Reduced padding for mobile */
+    }
+
     .hero .container {
         flex-direction: column;
         text-align: center;
@@ -573,19 +696,6 @@ body.light-mode .contact-card {
         display: block;
     }
 
-    .hero .container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero-text {
-        text-align: center;
-    }
-
-    .headline {
-        font-size: 2.5rem;
-    }
-
     .hero-actions {
         display: flex;
         flex-direction: column;
@@ -593,31 +703,8 @@ body.light-mode .contact-card {
     }
 
     .btn {
-        width: 80%;
+        width: 90%; /* Full width for easier tapping */
         margin-bottom: 1rem;
-    }
-
-    .btn-secondary {
-        margin-left: 0;
-    }
-
-    .timeline::after {
-        left: 31px;
-    }
-
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-    }
-    
-    .timeline-item:nth-child(odd),
-    .timeline-item:nth-child(even) {
-        left: 0;
-    }
-
-    .timeline-item::after {
-        left: 21px;
     }
 
     .projects {
@@ -625,13 +712,26 @@ body.light-mode .contact-card {
     }
 
     .contact-card {
-        padding: 2rem;
+        padding: 2.5rem 1.5rem;
     }
 
     .modal-content {
         width: 90%;
         margin: 20% auto;
         padding: 2rem;
+    }
+}
+
+/* ---
+--- Touch Device Optimizations ---
+--- */
+@media (hover: none) and (pointer: coarse) {
+    .custom-cursor {
+        display: none; /* Hide custom cursor on touch devices */
+    }
+
+    body {
+        cursor: auto; /* Revert to default system cursor */
     }
 }
 
@@ -653,3 +753,45 @@ body.light-mode .contact-card {
 body.light-mode .footer p {
     color: var(--text-color-light);
 }
+
+/* ---
+--- Custom Cursor & Scroll Progress ---
+--- */
+
+body {
+    cursor: none;
+}
+
+.custom-cursor {
+    position: fixed;
+    width: 20px; /* Made smaller */
+    height: 20px; /* Made smaller */
+    border: 2px solid #ff007a;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: transform 0.2s ease-out, width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-cursor.cursor-glow {
+    width: 50px; /* Larger for glow effect */
+    height: 50px;
+    background: radial-gradient(circle, rgba(255, 77, 77, 0.5) 0%, rgba(255, 77, 77, 0) 70%);
+    border: none;
+}
+
+.cursor-dot {
+    display: none; /* Removed */
+}
+
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 5px;
+    background-color: red;
+    z-index: 10000;
+}
+

@@ -105,4 +105,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Custom Cursor ---
+    const cursor = document.querySelector('.custom-cursor');
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    // Add glow effect on hover over interactive elements
+    const interactiveElements = document.querySelectorAll(
+        'a, button, .btn, .skill-tag, .project-card, .certification-item, .theme-toggle, .hamburger, .close-button'
+    );
+
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('cursor-glow');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('cursor-glow');
+        });
+    });
+
+    // --- Scroll Progress Bar ---
+    const progressBar = document.querySelector('.scroll-progress-bar');
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        progressBar.style.width = scrollPercent + '%';
+    });
+
 });
